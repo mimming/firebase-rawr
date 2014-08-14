@@ -9,16 +9,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-/**
- * Created by mimming on 8/7/14.
- */
 public class LoginActivity extends Activity {
     public static final String EXTRA_LOGIN = "extra-login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //TODO: Use an extra to skip the login form if I've just been launched and I'm logged in
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_login);
@@ -33,10 +34,19 @@ public class LoginActivity extends Activity {
                 processLogin(loginName.getText().toString());
             }
         });
+
+        // Read old saved login names
+        String savedLoginName = preferences.getString("loginName", null);
+        if(savedLoginName != null) {
+            loginName.setText(savedLoginName);
+            loginName.setSelection(savedLoginName.length());
+        }
+
+        // Enter to submit the login form
         loginName.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER) {
                     processLogin(loginName.getText().toString());
                     return true;
                 } else {
@@ -44,12 +54,6 @@ public class LoginActivity extends Activity {
                 }
             }
         });
-
-        String savedLoginName = preferences.getString("loginName", null);
-        if(savedLoginName != null) {
-            loginName.setText(savedLoginName);
-        }
-
     }
 
     private void processLogin(String loginName) {
@@ -58,6 +62,7 @@ public class LoginActivity extends Activity {
         // Save the login name for next time
         SharedPreferences.Editor preferencesEditor = preferences.edit();
         preferencesEditor.putString("loginName", loginName);
+        preferencesEditor.apply();
 
         // Start our main activity
         Intent intent = new Intent(this, RawrActivity.class);

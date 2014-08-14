@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    tools:context="com.firebase.rawr.RawrActivity">
+    tools:context="com.firebase.rawr.RawrActivity"
+    android:id="@+id/contactList">
 
     <LinearLayout
         android:orientation="vertical"
@@ -73,7 +74,7 @@
         android:textSize="100dp" />
 
     <Button
-        android:id="@+id/quitButton"
+        android:id="@+id/logoutButton"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_margin="20dp"
